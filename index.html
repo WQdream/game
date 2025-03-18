@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>翻翻乐游戏</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>翻翻乐游戏</h1>
+        
+        <div id="setup-screen">
+            <div class="setup-option">
+                <label for="player-count">玩家数量:</label>
+                <select id="player-count">
+                    <option value="2">2人</option>
+                    <option value="3">3人</option>
+                    <option value="4">4人</option>
+                </select>
+                
+                <div id="player-colors" class="player-colors-container">
+                    <div class="player-color-setup">
+                        <label for="player-1-color">玩家1颜色:</label>
+                        <select id="player-1-color" class="color-select">
+                            <option value="#FF5733" style="background-color: #FF5733">红色</option>
+                            <option value="#33A8FF" style="background-color: #33A8FF">蓝色</option>
+                            <option value="#33FF57" style="background-color: #33FF57">绿色</option>
+                            <option value="#F3FF33" style="background-color: #F3FF33">黄色</option>
+                            <option value="#D433FF" style="background-color: #D433FF">紫色</option>
+                            <option value="#FF33A8" style="background-color: #FF33A8">粉色</option>
+                        </select>
+                    </div>
+                    
+                    <div class="player-color-setup">
+                        <label for="player-2-color">玩家2颜色:</label>
+                        <select id="player-2-color" class="color-select">
+                            <option value="#33A8FF" style="background-color: #33A8FF">蓝色</option>
+                            <option value="#FF5733" style="background-color: #FF5733">红色</option>
+                            <option value="#33FF57" style="background-color: #33FF57">绿色</option>
+                            <option value="#F3FF33" style="background-color: #F3FF33">黄色</option>
+                            <option value="#D433FF" style="background-color: #D433FF">紫色</option>
+                            <option value="#FF33A8" style="background-color: #FF33A8">粉色</option>
+                        </select>
+                    </div>
+                    
+                    <div class="player-color-setup" style="display: none;">
+                        <label for="player-3-color">玩家3颜色:</label>
+                        <select id="player-3-color" class="color-select">
+                            <option value="#33FF57" style="background-color: #33FF57">绿色</option>
+                            <option value="#FF5733" style="background-color: #FF5733">红色</option>
+                            <option value="#33A8FF" style="background-color: #33A8FF">蓝色</option>
+                            <option value="#F3FF33" style="background-color: #F3FF33">黄色</option>
+                            <option value="#D433FF" style="background-color: #D433FF">紫色</option>
+                            <option value="#FF33A8" style="background-color: #FF33A8">粉色</option>
+                        </select>
+                    </div>
+                    
+                    <div class="player-color-setup" style="display: none;">
+                        <label for="player-4-color">玩家4颜色:</label>
+                        <select id="player-4-color" class="color-select">
+                            <option value="#F3FF33" style="background-color: #F3FF33">黄色</option>
+                            <option value="#FF5733" style="background-color: #FF5733">红色</option>
+                            <option value="#33A8FF" style="background-color: #33A8FF">蓝色</option>
+                            <option value="#33FF57" style="background-color: #33FF57">绿色</option>
+                            <option value="#D433FF" style="background-color: #D433FF">紫色</option>
+                            <option value="#FF33A8" style="background-color: #FF33A8">粉色</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="setup-option">
+                <label for="difficulty">难度级别:</label>
+                <select id="difficulty">
+                    <option value="easy">简单 (4x4)</option>
+                    <option value="medium">中等 (6x6)</option>
+                    <option value="hard">困难 (8x8)</option>
+                </select>
+            </div>
+            
+            <button id="start-game">开始游戏</button>
+        </div>
+        
+        <div id="game-screen" style="display: none;">
+            <div id="game-info">
+                <div id="current-player"></div>
+                <div id="scores"></div>
+            </div>
+            
+            <div id="game-board"></div>
+            
+            <button id="restart-game">重新开始</button>
+        </div>
+        
+        <div id="result-screen" style="display: none;">
+            <h2>游戏结束!</h2>
+            <div id="final-scores"></div>
+            <div id="winner"></div>
+            <button id="play-again">再玩一次</button>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html> 

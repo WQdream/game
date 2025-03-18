@@ -1,0 +1,454 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* 防止滚动条出现 */
+    background-color: #f5f5f5;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+}
+
+.container {
+    max-width: 100%;
+    width: 100%;
+    height: 100vh; /* 使用视口高度 */
+    background-color: white;
+    border-radius: 0; /* 全屏时不需要圆角 */
+    box-shadow: none; /* 全屏时不需要阴影 */
+    padding: 10px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+}
+
+h1 {
+    color: #333;
+    margin: 10px 0;
+    flex-shrink: 0;
+}
+
+/* 设置屏幕样式 */
+#setup-screen, #game-screen, #result-screen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    overflow: auto; /* 允许内容滚动 */
+}
+
+#game-screen {
+    justify-content: space-between;
+}
+
+/* 游戏板样式优化 */
+#game-board {
+    display: grid;
+    gap: 10px;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 100%;
+    flex-grow: 1; /* 允许游戏板占据剩余空间 */
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+}
+
+/* 卡片自适应大小 */
+.card {
+    background-color: #2196F3;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0;
+    transition: transform 0.3s, background-color 0.3s;
+    aspect-ratio: 1;
+    width: auto; /* 自动宽度 */
+    height: auto; /* 自动高度 */
+    min-width: 40px; /* 最小宽度 */
+    min-height: 40px; /* 最小高度 */
+}
+
+/* 游戏信息区域 */
+#game-info {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    flex-shrink: 0;
+}
+
+/* 按钮样式优化 */
+button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 10px 0;
+    transition: background-color 0.3s;
+    width: 100%;
+    max-width: 300px;
+    flex-shrink: 0;
+}
+
+/* 屏幕方向适配 */
+@media screen and (orientation: landscape) {
+    .container {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+    
+    h1 {
+        width: 100%;
+        margin: 5px 0;
+    }
+    
+    #game-screen {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+    
+    #game-info {
+        width: 100%;
+        order: -1;
+    }
+    
+    #game-board {
+        width: 70%;
+        height: calc(100% - 70px);
+    }
+    
+    #restart-game {
+        width: 25%;
+        margin-left: 5%;
+        align-self: center;
+    }
+    
+    /* 横屏时卡片大小调整 */
+    .easy .card {
+        width: calc((70vw - 60px) / 4);
+        height: calc((70vw - 60px) / 4);
+        max-height: calc((100vh - 120px) / 4);
+    }
+    
+    .medium .card {
+        width: calc((70vw - 90px) / 6);
+        height: calc((70vw - 90px) / 6);
+        max-height: calc((100vh - 120px) / 6);
+    }
+    
+    .hard .card {
+        width: calc((70vw - 120px) / 8);
+        height: calc((70vw - 120px) / 8);
+        max-height: calc((100vh - 120px) / 8);
+    }
+}
+
+/* 竖屏适配 */
+@media screen and (orientation: portrait) {
+    .container {
+        flex-direction: column;
+    }
+    
+    #game-board {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 1;
+        max-height: 70vh;
+    }
+    
+    /* 竖屏时卡片大小调整 */
+    .easy .card {
+        width: calc((100vw - 60px) / 4);
+        height: calc((100vw - 60px) / 4);
+        max-width: calc((70vh - 60px) / 4);
+        max-height: calc((70vh - 60px) / 4);
+    }
+    
+    .medium .card {
+        width: calc((100vw - 90px) / 6);
+        height: calc((100vw - 90px) / 6);
+        max-width: calc((70vh - 90px) / 6);
+        max-height: calc((70vh - 90px) / 6);
+    }
+    
+    .hard .card {
+        width: calc((100vw - 120px) / 8);
+        height: calc((100vw - 120px) / 8);
+        max-width: calc((70vh - 120px) / 8);
+        max-height: calc((70vh - 120px) / 8);
+    }
+}
+
+/* 保留其他样式 */
+.card.flipped {
+    transform: rotateY(180deg);
+    background-color: white;
+    font-size: 24px;
+    border: 2px solid #ddd;
+    color: black; /* 确保文字颜色可见 */
+}
+
+.card.matched {
+    background-color: #4CAF50;
+    color: white;
+    cursor: default;
+    animation: matchedAnimation 0.5s forwards;
+}
+
+@keyframes matchedAnimation {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 0.9;
+        background-color: #4CAF50;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 0.8;
+        background-color: #4CAF50;
+    }
+}
+
+/* 字体大小响应式调整 */
+@media (max-width: 768px) {
+    .card.flipped {
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .card.flipped {
+        font-size: 16px;
+    }
+}
+
+/* 游戏板边框样式 */
+.game-board-border {
+    border: 5px solid;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.setup-option {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+select {
+    padding: 8px 15px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    width: 200px;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+#final-scores {
+    margin: 20px 0;
+}
+
+.player-score {
+    margin: 10px 0;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+}
+
+#winner {
+    font-size: 24px;
+    font-weight: bold;
+    color: #4CAF50;
+    margin-bottom: 20px;
+}
+
+.current-player-highlight {
+    background-color: #ffeb3b;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.player-colors-container {
+    margin-top: 15px;
+}
+
+.player-color-setup {
+    margin: 10px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.color-select {
+    width: 150px;
+    margin-top: 5px;
+}
+
+.color-select option {
+    color: white;
+    font-weight: bold;
+    text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+}
+
+.player-tag {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 3px;
+    color: white;
+    font-weight: bold;
+    margin-right: 5px;
+    text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+}
+
+.current-player-indicator {
+    font-size: 20px;
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    color: white;
+    text-shadow: 0 0 3px rgba(0, 0, 0, 0.7);
+}
+
+/* 根据难度调整卡片大小 */
+.easy .card {
+    width: 80px;
+    height: 80px;
+}
+
+.medium .card {
+    width: 60px;
+    height: 60px;
+}
+
+.hard .card {
+    width: 40px;
+    height: 40px;
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+    
+    h1 {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+    
+    #setup-screen, #result-screen {
+        padding: 15px;
+    }
+    
+    button {
+        padding: 10px;
+    }
+    
+    #game-board {
+        gap: 5px;
+    }
+    
+    /* 根据难度调整卡片大小 */
+    .easy .card {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .medium .card {
+        width: 45px;
+        height: 45px;
+    }
+    
+    .hard .card {
+        width: 35px;
+        height: 35px;
+    }
+}
+
+/* 小屏幕手机适配 */
+@media (max-width: 480px) {
+    .container {
+        padding: 5px;
+    }
+    
+    h1 {
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+    
+    label, select, button {
+        font-size: 14px;
+    }
+    
+    #game-info {
+        flex-direction: column;
+    }
+    
+    #current-player, #scores {
+        margin-bottom: 10px;
+        width: 100%;
+    }
+    
+    /* 根据难度调整卡片大小 */
+    .easy .card {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .medium .card {
+        width: 35px;
+        height: 35px;
+    }
+    
+    .hard .card {
+        width: 25px;
+        height: 25px;
+    }
+    
+    #game-board {
+        gap: 4px;
+        padding: 5px;
+    }
+    
+    .card.flipped {
+        font-size: 16px;
+    }
+}
+
+/* 确保游戏屏幕在显示时正确布局 */
+#game-screen {
+    width: 100%;
+} 
